@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.shreyas208.databass.ui.RegisterActivity">
+
+    <EditText
+        android:id="@+id/register_et_username"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/LoginRegisterEditText"
+        android:hint="@string/register_et_username_hint"
+        android:inputType="textNoSuggestions"/>
+
+    <EditText
+        android:id="@+id/register_et_password"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/LoginRegisterEditText"
+        android:hint="@string/register_et_password_hint"
+        android:inputType="textPassword"/>
+
+    <EditText
+        android:id="@+id/register_et_confirm_password"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/LoginRegisterEditText"
+        android:hint="@string/register_et_confirm_password_hint"
+        android:inputType="textPassword"/>
+
+    <EditText
+        android:id="@+id/register_et_email_address"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/LoginRegisterEditText"
+        android:hint="@string/register_et_email_address_hint"
+        android:inputType="textEmailAddress"/>
+
+    <EditText
+        android:id="@+id/register_et_display_name"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/LoginRegisterEditText"
+        android:hint="@string/register_et_display_name_hint"
+        android:inputType="textPersonName"/>
+
+    <LinearLayout
+        android:id="@+id/register_ll_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@color/colorAccentDark">
+
+        <Button
+            android:id="@+id/register_btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/register_btn_register"
+            style="@style/SplashButton">
+        </Button>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/register_tv_login"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/LoginRegisterHelpText"
+        android:text="@string/register_tv_login"/>
+
+</LinearLayout>
