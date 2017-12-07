@@ -5,28 +5,41 @@ UPDATE user
 SET checkin_count = checkin_count+1, score = score + 1
 WHERE username = NEW.username;
 
-DROP TRIGGER update_checkin_count
+DROP TRIGGER update_checkin_count;
 
 delimiter //
 
-CREATE TRIGGER Welcome_Achievement
-AFTER INSERT ON user
+CREATE TRIGGER Welcome_Achievement_Before
+BEFORE INSERT ON user
 FOR EACH ROW
 BEGIN
-	UPDATE user
-    SET score = score +
+	SET NEW.score = 
     (
 		SELECT points
         FROM achievement
         WHERE id = "welcome"
-    )
-    WHERE username = NEW.username;
-    
+    );
+END//
+
+delimiter ;
+
+DROP TRIGGER Welcome_Achievement;
+
+delimiter //
+
+CREATE TRIGGER Welcome_Achievement_After
+AFTER INSERT ON user
+FOR EACH ROW
+BEGIN
     INSERT INTO achieve
     VALUES(NEW.username, "welcome");
 END//
 
 delimiter ;
+
+
+DROP TRIGGER welcome_achievement;
+
 
 delimiter //
 
@@ -145,10 +158,10 @@ IF
 (
 	SELECT COUNT(*)
 	FROM follow
-	WHERE username_follower = NEW.username_follower
-) = 10 AND check_achievement(NEW.username_follower, "serial_stalker")
+	WHERE username_from = NEW.username_from
+) = 10 AND check_achievement(NEW.username_from, "serial_stalker")
 THEN
-CALL attain_achievement(NEW.username_follower, "serial_stalker");
+CALL attain_achievement(NEW.username_from, "serial_stalker");
 END IF;
 END; //
 delimiter ;
@@ -165,10 +178,10 @@ IF
 (
 	SELECT COUNT(*)
 	FROM follow
-	WHERE username_follower = NEW.username_follower
-) = 1 AND check_achievement(NEW.username_follower, "stalker")
+	WHERE username_from = NEW.username_from
+) = 1 AND check_achievement(NEW.username_from, "stalker")
 THEN
-CALL attain_achievement(NEW.username_follower, "stalker");
+CALL attain_achievement(NEW.username_from, "stalker");
 END IF;
 END; //
 delimiter ;
@@ -190,3 +203,73 @@ CALL attain_achievement(NEW.username, "you_get_around");
 END IF;
 END; //
 delimiter ;
+
+
+
+delimiter //
+
+CREATE TRIGGER traveling_far_and_wide_achievement
+AFTER INSERT ON checkin
+FOR EACH ROW
+BEGIN
+	DECLARE CITY_THRESHOLD INT DEFAULT 5000;
+	
+	DECLARE done BOOLEAN DEFAULT FALSE;
+    DECLARE beginning POINT;
+    DECLARE p POINT;
+    DECLARE poly VARCHAR(255) DEFAULT 'POLYGON((';
+    DECLARE count INT DEFAULT 0;
+        
+	DECLARE cur CURSOR FOR
+    (
+		SELECT DISTINCT location
+		FROM city, checkin
+		WHERE id = city_id AND checkin.username = NEW.username
+		ORDER BY checkin_time DESC
+		LIMIT 0,15
+	);
+    
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+	
+    OPEN cur;
+	
+	read_loop: LOOP
+		IF count = 0 THEN
+			FETCH cur INTO beginning;
+            
+            IF done THEN
+				LEAVE read_loop;
+            ELSE
+				SET p = beginning;
+			END IF;
+		ELSE
+			FETCH cur INTO p;
+		END IF;
+        
+		IF done THEN
+			LEAVE read_loop;
+		END IF;
+        
+        SET poly = CONCAT(poly, p.STX, ' ', p.STY, ', ');
+        
+        SET count = count + 1;
+	END LOOP;
+    
+    SET poly = CONCAT(poly, beginning.STX, ' ', beginning.STY, '))');
+    #Contains(GeomFromText('POLYGON((41.000497 -109.050149, 41.002380 -102.051881, 36.993237 -102.041959, 36.999037 -109.045220, 41.000497 -109.050149))'), location);
+	
+	IF
+	(
+		SELECT COUNT(*)
+        FROM city
+        WHERE Contains(GeomFromText(poly), location)
+	) >= CITY_THRESHOLD THEN
+	CALL attain_achievement(NEW.username, "traveling_far_and_wide");
+	END IF;
+    
+	CLOSE cur;
+END; //
+
+delimiter ;
+
+DROP TRIGGER traveling_far_and_wide_achievement;
