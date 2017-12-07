@@ -61,7 +61,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(30*1000)
                 .setSmallestDisplacement(10)
-                .setInterval(1000);
+                .setInterval(1000)
+                .setNumUpdates(3);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
                 @Override
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }
             });
         } else {
-            TravelationsApp.showToast(this, R.string.profile_toast_location_denied);
+            TravelationsApp.showToast(this, R.string.toast_location_denied);
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         }
 
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.profile_menu_logout:
+            case R.id.main_menu_logout:
                 TravelationsApp.getApi().logout(app.getUsername(), app.getAccessToken()).enqueue(new DoNothingCallback(this.getLocalClassName()));
                 app.clearLoginValues();
                 Intent i = new Intent(this, SplashActivity.class);
@@ -100,14 +101,21 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 startActivity(i);
                 finish();
                 break;
-            case R.id.profile_menu_settings:
+            case R.id.main_menu_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
         }
         return true;
     }
 
+    private void clearBackStack() {
+        for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+            getSupportFragmentManager().popBackStackImmediate();
+        }
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        clearBackStack();
         if (item.getItemId() == R.id.nav_checkin) {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new CheckinFragment()).commit();
         } else if (item.getItemId() == R.id.nav_profile) {
@@ -115,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, fragment).commit();
         } else if (item.getItemId() == R.id.nav_map) {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new MapFragment()).commit();
+        } else if (item.getItemId() == R.id.nav_feed) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, new FeedFragment()).commit();
         }
         return true;
     }
@@ -125,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
         } else {
-            TravelationsApp.showToast(this, R.string.profile_toast_location_denied);
+            TravelationsApp.showToast(this, R.string.toast_location_denied);
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         }
     }
@@ -152,6 +162,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         if (mLocation != null) {
             locationSubscriber.newLocation();
         }
+    }
+
+    protected void showProfile(String username) {
+        ProfileFragment fragment = ProfileFragment.newInstance(username);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, fragment).addToBackStack(null).commit();
+    }
+
+    protected void showFeed() {
+        FeedFragment fragment = new FeedFragment();
+        clearBackStack();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment_container, fragment).commit();
     }
 
     protected void removeLocationSubscriber() {

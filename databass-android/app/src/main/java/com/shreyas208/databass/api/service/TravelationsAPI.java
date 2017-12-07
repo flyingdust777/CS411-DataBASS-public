@@ -2,6 +2,7 @@ package com.shreyas208.databass.api.service;
 
 
 import com.shreyas208.databass.api.model.CheckinResponse;
+import com.shreyas208.databass.api.model.FeedResponse;
 import com.shreyas208.databass.api.model.GenericResponse;
 import com.shreyas208.databass.api.model.LoginResponse;
 import com.shreyas208.databass.api.model.ProfileResponse;
@@ -44,6 +45,11 @@ public interface TravelationsAPI {
                                   @Field("access_token") String accessToken,
                                   @Path("requestUsername") String requestUsername);
 
+    @POST("user/feed")
+    @FormUrlEncoded
+    Call<FeedResponse> feed(@Field("username") String username,
+                            @Field("access_token") String accessToken);
+
     @POST("user/checkin")
     @FormUrlEncoded
     Call<CheckinResponse> checkin(@Field("username") String username,
@@ -72,19 +78,19 @@ public interface TravelationsAPI {
 
     @POST("user/follow")
     @FormUrlEncoded
-    Call<Object> follow(@Field("follower_username") String followerUsername,
-                        @Field("access_token") String accessToken,
-                        @Field("followee_username") String followeeUsername);
+    Call<GenericResponse> follow(@Field("username_from") String username,
+                                 @Field("access_token") String accessToken,
+                                 @Field("username_to") String usernameTo);
 
     @POST("user/unfollow")
     @FormUrlEncoded
-    Call<Object> unfollow(@Field("follower_username") String followerUsername,
-                          @Field("access_token") String accessToken,
-                          @Field("followee_username") String followeeUsername);
+    Call<GenericResponse> unfollow(@Field("username_from") String username,
+                                   @Field("access_token") String accessToken,
+                                   @Field("username_to") String usernameTo);
 
     @POST("user/remove")
     @FormUrlEncoded
-    Call<Object> remove(@Field("username") String username,
-                        @Field("access_token") String accessToken);
+    Call<GenericResponse> remove(@Field("username") String username,
+                                 @Field("access_token") String accessToken);
 
 }

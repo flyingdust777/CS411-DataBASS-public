@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Used to represent Profile response JSON file.
  */
-public class ProfileResponse {
+public class FeedResponse {
 
     private final boolean success;
     @SerializedName("error_code") private final String errorCode;
@@ -20,9 +20,9 @@ public class ProfileResponse {
     @SerializedName("follower_count") private final int followerCount;
     @SerializedName("following_count") private final int followingCount;
     @SerializedName("achievements") private final List<Achievement> achievements;
-    @SerializedName("recent_checkins") private final List<RecentCheckin> recentCheckins;
+    @SerializedName("checkins") private final List<RecentCheckin> checkins;
 
-    public ProfileResponse(boolean success, String errorCode, String displayName, String joinDate, int checkinCount, int score, int followerCount, int followingCount, List<Achievement> achievements, List<RecentCheckin> recentCheckins) {
+    public FeedResponse(boolean success, String errorCode, String displayName, String joinDate, int checkinCount, int score, int followerCount, int followingCount, List<Achievement> achievements, List<RecentCheckin> checkins) {
         this.success = success;
         this.errorCode = errorCode;
         this.displayName = displayName;
@@ -32,7 +32,7 @@ public class ProfileResponse {
         this.followerCount = followerCount;
         this.followingCount = followingCount;
         this.achievements = achievements;
-        this.recentCheckins = recentCheckins;
+        this.checkins = checkins;
     }
 
     public boolean isSuccess() {
@@ -75,7 +75,7 @@ public class ProfileResponse {
         return achievements;
     }
 
-    public List<RecentCheckin> getRecentCheckins() {
-        return recentCheckins;
+    public List<RecentCheckin> getCheckins() {
+        return checkins;
     }
 }

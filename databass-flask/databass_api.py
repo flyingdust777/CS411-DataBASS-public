@@ -410,7 +410,7 @@ def profile(username):
                    "FROM city, checkin, country " +
                    "WHERE id = city_id AND city.country = country.code AND username=%s " +
                    "ORDER BY checkin_time DESC " +
-                   "LIMIT 0,15;", (logged_in_username,))
+                   "LIMIT 0,15;", (username,))
     results = cursor.fetchall()
 
     cursor.close()
