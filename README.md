@@ -67,7 +67,7 @@ We developed two advanced functions for our project:
 - Stored procedure (Checks if an achievement has already been acquired so users don't collect achievements multiple times)
 - Transaction (The stored procedure)
 - Prepared statements (Every query executed by mysql.connector is a prepared statement to prevent SQL injection and improve
-                       the readability of the databass_api.py file)
+                       the readability of the databass_api.py file.)
 - Compound statements (The stored procedure)
 - Constraint (Foreign key constraints on "checkin", "follow", and "achieve" tables)
 - View (A view for querying profile information)
