@@ -22,7 +22,7 @@ This project is a traveling social media Android app where users challenge thems
 We think this app would be useful because it would give people an incentive to travel to many locations of the world, challenge themselves, compete with their friends, and have fun all the time. We are targeting the average individual, especially the people that like to travel a lot. It would also be useful for connecting people together inside of a social network, and eventually, the app could be used to store photos and reviews of different cities and places, so users could quickly see what exciting places are around them.
 
 ## Dataset
-The dataset we will be using is the World Cities Dataset (https://www.kaggle.com/max-mind/world-cities-database) which contains over 1,000,000 rows. The dataset contains fields such as country code, ASCII city name, city name, region, population, latitude, and longitude. More details about this dateset can be found at https://www.maxmind.com/en/free-world-cities-database.
+The dataset we will be using is the [World Cities Dataset](https://www.kaggle.com/max-mind/world-cities-database) which contains over 1,000,000 rows. The dataset contains fields such as country code, ASCII city name, city name, region, population, latitude, and longitude. More details about this dateset can be found [here](https://www.maxmind.com/en/free-world-cities-database).
 
 ## Functionality
 We will have a table in the database that contains what users visit certain locations and when. In addition, there will be another table that contains follower followee relationships between users.
@@ -51,3 +51,9 @@ The current list of advanced techniques is contingent based off what has been ta
 - Compound Statements
 - Parallel query execution
 - Stored procedure
+
+## ER Diagram
+<p align="center">
+  <img src="https://raw.githubusercontent.com/flyingdust777/CS411-DataBASS-public/master/er.png" width="500"/>
+</p>
+
