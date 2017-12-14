@@ -51,18 +51,26 @@ Select functions will be used in different places too. After raw data has been a
 - What is the total number of cities a user has visited?
 
 ## Advanced Functions
-One advanced function we might use is a KD Tree or R-Tree that will be used to search and identify nearby cities by latitude and longitude. Since the Earth is round, we would have to be careful of cities that are on the edge of the Eastern and Western hemispheres. The purpose of this function is to efficiently identify cities near users. However, we may end up using an advanced SQL query that could locate the closest city based off polar coordinate conversions.
+We developed two advanced functions for our project:
 
-Another advanced function we plan on creating is an interactive map that plots the cities and the paths that users have traveled. We could show the most traveled or walked paths on a map and label the most visited cities and summary statistics about each of them. This would be a cool function because it would let users learn interesting facts about their travels, their friends’ travels, and the overall user group for the app.
+1. In our first implementation of the functionality that allows a user to check into a city, the backend would take in the user's latitude and longitude as input and query the database for the nearest cities to the user's location.  To do this, sophisticated trigonometric calculations would be performed for each of the over 3 million rows of the cities dataset to determine the distance between the city represented by that row and the user's location.  This query would run for approximately 7.4 seconds.
+
+To optimize the runtime of this functionality, we implemented a spatial index on the latitude and longitude coordinates of the cities in our database.  This index is structured as an R-Tree and allows the database to query efficiently for cities close to a user's location without performing sophisticated trigonometric calculations on every row.  It reduces the runtime of the original query to around 300 ms.
+
+In our final implementation, the query does not use this index and instead uses SQL "BETWEEN" clauses.  These clauses reduce the runtime of the original query to approximately 30 ms.  If we had continued to use the index along with these clauses, the runtime would be between 30 ms. and 300 ms.
+
+2. When a user registers an account within the app, a verification email is sent to the email address provided by that user and a special token is created in the database.  After the user clicks on the link in the verification email, this token is removed from the database and the user's account has been verified.  The user is then free to use the app.
 
 ## Advanced Techniques
-The current list of advanced techniques is contingent based off what has been taught in lecture so far.
-- Indexing
-- Transactions
-- Prepared Statements
-- Compound Statements
-- Parallel query execution
-- Stored procedure
+- Indexing (See first point in "Advanced Functions" section)
+- Triggers (Implements functionality for achievements)
+- Stored procedure (Checks if an achievement has already been acquired so users don't collect achievements multiple times)
+- Transaction (The stored procedure)
+- Prepared statements (Every query executed by mysql.connector is a prepared statement to prevent SQL injection and improve
+                       the readability of the databass_api.py file)
+- Compound statements (The stored procedure)
+- Constraint (Foreign key constraints on "checkin", "follow", and "achieve" tables)
+- View (A view for querying profile information)
 
 ## ER Diagram
 <p align="center">
