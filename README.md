@@ -11,9 +11,9 @@ As users travel to multiple cities, the database will collect information about 
 </p>
 
 ## Video
-<div align="center">
+<p align="center">
   <a href="https://www.youtube.com/watch?v=P-jm9EzAeh8"><img src="https://img.youtube.com/vi/P-jm9EzAeh8/0.jpg" alt="Travelations Demo" </a>
-</div>
+</p>
 
 ## Description
 This project is a traveling social media Android app where users challenge themselves to travel to as many cities as possible.  We want to provide a social game that rewards people for traveling the world. As users travel to multiple cities, the database will collect information about the users that have visited each city.  Then the app will allow users to monitor the cities they have visited as well as the cities their friends have visited.  When they arrive at a city, a new record will be inserted into a table in the database with the user’s username, the city, and the time of arrival.
