@@ -53,13 +53,13 @@ Select functions will be used in different places too. After raw data has been a
 ## Advanced Functions
 We developed two advanced functions for our project:
 
-1. In our first implementation of the functionality that allows a user to check into a city, the backend would take in the user's latitude and longitude as input and query the database for the nearest cities to the user's location.  To do this, sophisticated trigonometric calculations would be performed for each of the over 3 million rows of the cities dataset to determine the distance between the city represented by that row and the user's location.  This query would run for approximately 7.4 seconds.
+1.  In our first implementation of the functionality that allows a user to check into a city, the backend would take in the user's latitude and longitude as input and query the database for the nearest cities to the user's location.  To do this, sophisticated trigonometric calculations would be performed for each of the over 3 million rows of the cities dataset to determine the distance between the city represented by that row and the user's location.  This query would run for approximately 7.4 seconds.
 
-To optimize the runtime of this functionality, we implemented a spatial index on the latitude and longitude coordinates of the cities in our database.  This index is structured as an R-Tree and allows the database to query efficiently for cities close to a user's location without performing sophisticated trigonometric calculations on every row.  It reduces the runtime of the original query to around 300 ms.
+    To optimize the runtime of this functionality, we implemented a spatial index on the latitude and longitude coordinates of the cities in our database.  This index is structured as an R-Tree and allows the database to query efficiently for cities close to a user's location without performing sophisticated trigonometric calculations on every row.  It reduces the runtime of the original query to around 300 ms.
 
-In our final implementation, the query does not use this index and instead uses SQL "BETWEEN" clauses.  These clauses reduce the runtime of the original query to approximately 30 ms.  If we had continued to use the index along with these clauses, the runtime would be between 30 ms. and 300 ms.
+    In our final implementation, the query does not use this index and instead uses SQL "BETWEEN" clauses.  These clauses reduce the runtime of the original query to approximately 30 ms.  If we had continued to use the index along with these clauses, the runtime would be between 30 ms. and 300 ms.
 
-2. When a user registers an account within the app, a verification email is sent to the email address provided by that user and a special token is created in the database.  After the user clicks on the link in the verification email, this token is removed from the database and the user's account has been verified.  The user is then free to use the app.
+2.  When a user registers an account within the app, a verification email is sent to the email address provided by that user and a special token is created in the database.  After the user clicks on the link in the verification email, this token is removed from the database and the user's account has been verified.  The user is then free to use the app.
 
 ## Advanced Techniques
 - Indexing (See first point in "Advanced Functions" section)
